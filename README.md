@@ -7,5 +7,18 @@
 [![Stars](https://img.shields.io/github/stars/MadeByRoucoule/DevDock?style=social&label=Stars)](https://github.com/MadeByRoucoule/DevDock)
 </div>
 
+## 🎭 Clone the repository:
+```
+git clone https://github.com/MadeByRoucoule/DevDock.git
+cd Diane-1
+```
+
+## 📦 Install the required dependencies:
+```
+pip install -r requirements.txt
+```
+
 > [!IMPORTANT]
 > **🚀 Project in development!**
+
+[DevDock]: https://github.com/MadeByRoucoule/DevDock
