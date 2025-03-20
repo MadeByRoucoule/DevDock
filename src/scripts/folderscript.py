@@ -30,3 +30,15 @@ class FolderScript:
         file_path = os.path.join(self.folder_path, file_name)
         os.remove(file_path)
         return file_path
+
+    def rename_folder(self, old_name, new_name):
+        old_path = os.path.join(self.folder_path, old_name)
+        new_path = os.path.join(self.folder_path, new_name)
+        os.rename(old_path, new_path)
+        return new_path
+
+    def rename_file(self, old_name, new_name):
+        old_path = os.path.join(self.folder_path, old_name)
+        new_path = os.path.join(self.folder_path, new_name)
+        os.rename(old_path, new_path)
+        return new_path
