@@ -1,9 +1,1 @@
 customtkinter
-
-
-Nettoie mon programme :
-- Ajoute des ligne vide pour une meilleur lecture
-- Retire les objects innutiles ou inutiliser
-- Ajoute quelques leger commentaires en anglais
-
-Code :
