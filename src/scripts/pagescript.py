@@ -5,13 +5,17 @@ class PageScript:
         self.current_page = None
 
     def change_page(self, page):
-        self.pack_page(page)
+        if self.current_page != page:
+            self.destroy_page()
+            self.pack_page(page)
+        else: 
+            print("Page already packed")
 
     def get_current_page(self):
         return self.current_page
     
-    def unpack_page(self):
-        self.current_page.pack_forget()
+    def destroy_page(self):
+        self.current_page.destroy()
 
     def pack_page(self, page):
         self.current_page = page

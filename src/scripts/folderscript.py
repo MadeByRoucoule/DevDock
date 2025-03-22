@@ -42,3 +42,17 @@ class FolderScript:
         new_path = os.path.join(self.folder_path, new_name)
         os.rename(old_path, new_path)
         return new_path
+    
+    def get_size(self):
+        total_size = 0
+        for root, dirs, files in os.walk(self.folder_path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                total_size += os.path.getsize(file_path)
+                
+        units = ["o", "Ko", "Mo", "Go", "To"]
+        unit_index = 0
+        while total_size >= 1024 and unit_index < len(units) - 1:
+            total_size /= 1024
+            unit_index += 1
+        return f"{total_size:.2f} {units[unit_index]}"
