@@ -1,0 +1,24 @@
+{
+    "General": {
+        "Language": {
+            "English": 1,
+            "Français": 0
+        },
+        "Path": "C:/Users/USER/Documents/DEV"
+    },
+    "Apparence": {
+        "Theme": {
+            "Dark": 1,
+            "Light": 0
+        },
+        "Color": {
+            "Green": 1,
+            "Blue": 0
+        },
+        "Project columns": {
+            "state": 3,
+            "from": 2,
+            "to": 5
+        }
+    }
+}
