@@ -8,12 +8,13 @@
     },
     "Apparence": {
         "Theme": {
-            "Dark": 1,
-            "Light": 0
+            "Dark": 0,
+            "Light": 1
         },
         "Color": {
-            "Green": 1,
-            "Blue": 0
+            "Green": 0,
+            "Blue": 0,
+            "Black": 1
         },
         "Project columns": {
             "state": 3,
