@@ -10,7 +10,7 @@
 ## 🎭 Clone the repository:
 ```
 git clone https://github.com/MadeByRoucoule/DevDock.git
-cd Diane-1
+cd DevDock
 ```
 
 ## 📦 Install the required dependencies:
