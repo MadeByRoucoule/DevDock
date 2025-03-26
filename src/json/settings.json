@@ -4,12 +4,12 @@
             "English": 1,
             "Français": 0
         },
-        "Path": "C:/Users/USER/Documents/DEV"
+        "Path": "C:/Users/Roucoule/Documents/Dev"
     },
     "Apparence": {
         "Theme": {
-            "Dark": 0,
-            "Light": 1
+            "Dark": 1,
+            "Light": 0
         },
         "Color": {
             "Green": 0,

@@ -552,7 +552,7 @@ class HomePage(CTkFrame):
         if self.license_option.get():
             folder_script.create_file("LICENSE", content="Votre licence ici")
         if self.git_option.get():
-            folder_script.create_folder(".git")
+            os.system(f'cd {project_folder} && git init')
         if self.gitignore_option.get():
             folder_script.create_file(".gitignore", content="# Fichiers à ignorer\n")
         print(f"Projet '{project_name}' créé avec succès dans {project_folder}.")
