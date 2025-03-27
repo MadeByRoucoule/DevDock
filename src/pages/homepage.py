@@ -1,4 +1,5 @@
 from customtkinter import *
+import tkinter.simpledialog as simpledialog 
 from tkinter import ttk
 from CTkMenuBar import *
 from PIL import Image
@@ -50,7 +51,7 @@ class HomePage(CTkFrame):
         self.left_panel.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
         self.left_panel.grid_propagate(False)
         self.left_panel.grid_columnconfigure(0, weight=1)
-        self.left_panel.grid_rowconfigure(1, weight=1)
+        self.left_panel.grid_rowconfigure(2, weight=1)
 
         # Middle Panel (Projects)
         self.middle_panel = CTkFrame(self)
@@ -59,6 +60,8 @@ class HomePage(CTkFrame):
         self.middle_panel.grid_rowconfigure(0, weight=0)
         self.middle_panel.grid_rowconfigure(1, weight=0)
         self.middle_panel.grid_rowconfigure(2, weight=1)
+        self.middle_panel.grid_rowconfigure(3, weight=0)
+        self.middle_panel.grid_rowconfigure(4, weight=0)
 
         # Right Panel (Details)
         self.right_panel = CTkFrame(self, width=250)
@@ -73,12 +76,15 @@ class HomePage(CTkFrame):
             widget.destroy()
 
         # Header Label
-        self.left_label = CTkLabel(self.left_panel, text="Languages", font=("Arial", 18, "bold"), anchor="w")
-        self.left_label.grid(row=0, column=0, sticky="ew", padx=15, pady=15)
+        self.left_label = CTkLabel(self.left_panel, text="Languages", font=("Arial", 16, "bold"), anchor="w")
+        self.left_label.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
+
+        separator = CTkFrame(self.left_panel, height=2, fg_color=["gray65", "gray25"])
+        separator.grid(row=1, column=0, sticky="ew", padx=10, pady=(0, 10))
 
         # Scrollable Frame for Languages
         self.left_listbox = CTkScrollableFrame(self.left_panel, fg_color="transparent")
-        self.left_listbox.grid(row=1, column=0, sticky="nsew")
+        self.left_listbox.grid(row=2, column=0, sticky="nsew")
 
         languages = self.languages_folder.get_folders()
         for language in languages:
@@ -101,7 +107,7 @@ class HomePage(CTkFrame):
                     widget.bind("<Button-1>", lambda e, lang=language: self.update_middle_panel(lang))
 
         # Add Language Button
-        self.left_add_language_img = CTkImage(Image.open("src/assets/add-database.png").resize((25, 25)), size=(25, 25))
+        self.left_add_language_img = CTkImage(Image.open("src/assets/add-database.png").resize((24, 24)), size=(25, 25))
         self.left_add_language_btn = CTkButton(
             self.left_panel,
             text="Add language",
@@ -110,7 +116,7 @@ class HomePage(CTkFrame):
             compound="left",
             command=self.add_language
         )
-        self.left_add_language_btn.grid(row=2, column=0, sticky="ew", padx=20, pady=(0, 15))
+        self.left_add_language_btn.grid(row=3, column=0, sticky="ew", padx=10, pady=(0, 10))
 
     def initialize_right_panel(self):
 
@@ -146,9 +152,9 @@ class HomePage(CTkFrame):
         # Create header and project list
         self.create_middle_header(language)
         separator = CTkFrame(self.middle_panel, height=2, fg_color=["gray65", "gray25"])
-        separator.grid(row=1, column=0, sticky="ew", padx=15, pady=(0, 15))
+        separator.grid(row=1, column=0, sticky="ew", padx=10, pady=(0, 10))
         self.middle_listbox = CTkScrollableFrame(self.middle_panel, fg_color="transparent")
-        self.middle_listbox.grid(row=2, column=0, sticky="nsew", padx=0, pady=(0, 15))
+        self.middle_listbox.grid(row=2, column=0, sticky="nsew", padx=0, pady=(0, 10))
 
         # Configure grid columns
         num_columns = self.settings_script.get_setting_value("Apparence.Project columns")
@@ -161,10 +167,16 @@ class HomePage(CTkFrame):
             row, column = divmod(index, num_columns)
             self.create_project_widget(language, filename, row, column)
 
+        separator = CTkFrame(self.middle_panel, height=2, fg_color=["gray65", "gray25"])
+        separator.grid(row=3, column=0, sticky="ew", padx=10)
+
+        # Create footer
+        self.create_middle_footer(language)
+
     def create_middle_header(self, language):
 
         self.middle_title_frame = CTkFrame(self.middle_panel, fg_color="transparent")
-        self.middle_title_frame.grid(row=0, column=0, sticky="ew", padx=15, pady=15)
+        self.middle_title_frame.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
         self.middle_title_frame.grid_columnconfigure(0, weight=0)
         self.middle_title_frame.grid_columnconfigure(1, weight=1)
 
@@ -174,15 +186,16 @@ class HomePage(CTkFrame):
         self.middle_title_image_label.grid(row=0, column=0, padx=(0, 5))
 
         # Language Title
-        self.middle_title_label = CTkLabel(self.middle_title_frame, text=language, font=("Arial", 18, "bold"), anchor="w")
+        self.middle_title_label = CTkLabel(self.middle_title_frame, text=language, font=("Arial", 16, "bold"), anchor="w")
         self.middle_title_label.grid(row=0, column=1, sticky="ew")
 
         # Edit Language Button
-        self.middle_title_edit_img = CTkImage(Image.open("src/assets/edit.png").resize((25, 25)), size=(25, 25))
+        self.middle_title_edit_img = CTkImage(Image.open("src/assets/edit.png").resize((20, 20)), size=(20, 20))
         self.middle_title_edit_btn = CTkButton(
             self.middle_title_frame,
-            text="Edit",
-            font=("Arial", 14),
+            text="",
+            width=28,
+            height=28,
             fg_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["top_fg_color"]),
             hover_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["border_color"]),
             text_color=["black", "white"],
@@ -190,19 +203,46 @@ class HomePage(CTkFrame):
             compound="left",
             command=lambda: self.edit_language(language)
         )
-        self.middle_title_edit_btn.grid(row=0, column=2, padx=(5, 0))
+        self.middle_title_edit_btn.grid(row=0, column=2)
+
+        # Search Entry
+        self.middle_title_search_entry = CTkEntry(self.middle_title_frame, placeholder_text="Search", font=("Arial", 12), height=28)
+        self.middle_title_search_entry.grid(row=0, column=3, padx=(5, 0))
+
+    def create_middle_footer(self, language):
+
+        self.middle_footer_frame = CTkFrame(self.middle_panel, fg_color="transparent")
+        self.middle_footer_frame.grid(row=4, column=0, sticky="ew", padx=10, pady=10)
+        self.middle_footer_frame.grid_columnconfigure(0, weight=1)
+
+        # Languages info label
+        projects_folder = FolderScript(f"{self.BASE_PATH}/{language}")
+        self.projects_count_label = CTkLabel(self.middle_footer_frame, text=f"{len(projects_folder.get_folders())} projects\n{projects_folder.get_size()}", font=("Arial", 11, 'italic'), anchor="w")
+        self.projects_count_label.grid(row=0, column=0, sticky='ew',pady=(0, 0))
+
+        # Clone GitHub Button
+        self.middle_title_clone_img = CTkImage(Image.open("src/assets/github.png").resize((24, 24)), size=(25, 25))
+        self.middle_title_clone_btn = CTkButton(
+            self.middle_footer_frame,
+            text="Clone GitHub",
+            font=("Arial", 14),
+            image=self.middle_title_clone_img,
+            compound="left",
+            command=lambda: self.clone_github(language)
+        )
+        self.middle_title_clone_btn.grid(row=0, column=1)
 
         # Add Project Button
-        self.middle_title_add_img = CTkImage(Image.open("src/assets/add-propertie.png").resize((25, 25)), size=(25, 25))
+        self.middle_title_add_img = CTkImage(Image.open("src/assets/add-propertie.png").resize((24, 24)), size=(25, 25))
         self.middle_title_add_btn = CTkButton(
-            self.middle_title_frame,
+            self.middle_footer_frame,
             text="Add project",
             font=("Arial", 14),
             image=self.middle_title_add_img,
             compound="left",
             command=lambda: self.add_project(language)
         )
-        self.middle_title_add_btn.grid(row=0, column=3, padx=(5, 0))
+        self.middle_title_add_btn.grid(row=0, column=2, padx=(5, 0))
 
     def create_project_widget(self, language, filename, row, column):
 
@@ -220,7 +260,7 @@ class HomePage(CTkFrame):
         file_size_label.grid(row=1, column=0, sticky="ew", padx=10, pady=(0, 10))
 
         if os.path.exists(f"{self.BASE_PATH}/{language}/{filename}/.git"):
-            git_img = CTkImage(Image.open("src/assets/git.png").resize((25, 25)), size=(25, 25))
+            git_img = CTkImage(Image.open("src/assets/git.png").resize((24, 24)), size=(25, 25))
             git_img_label = CTkLabel(file_frame, text="", image=git_img, anchor="e")
             git_img_label.grid(row=1, column=1, sticky='ew', padx=(0, 10))
         
@@ -253,18 +293,18 @@ class HomePage(CTkFrame):
         # Hide existing widgets
         self.middle_title_label.grid_forget()
         self.middle_title_edit_btn.grid_forget()
-        self.middle_title_add_btn.grid_forget()
+        self.middle_title_search_entry.grid_forget()
 
         # Create entry for new language name
         self.edit_language_title_entry = CTkEntry(self.middle_title_frame, placeholder_text=language)
         self.edit_language_title_entry.grid(row=0, column=1, sticky="ew")
 
         # Cancel Button
-        self.middle_title_cancel_img = CTkImage(Image.open("src/assets/close.png").resize((25, 25)), size=(25, 25))
+        self.middle_title_cancel_img = CTkImage(Image.open("src/assets/close.png").resize((20, 20)), size=(20, 20))
         self.middle_title_cancel_btn = CTkButton(
             self.middle_title_frame,
-            text="Cancel",
-            font=("Arial", 14),
+            text="",
+            width=28,
             fg_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["top_fg_color"]),
             hover_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["border_color"]),
             text_color=["black", "white"],
@@ -275,11 +315,11 @@ class HomePage(CTkFrame):
         self.middle_title_cancel_btn.grid(row=0, column=2, padx=(5, 0))
 
         # Done Button
-        self.middle_title_done_img = CTkImage(Image.open("src/assets/done.png").resize((25, 25)), size=(25, 25))
+        self.middle_title_done_img = CTkImage(Image.open("src/assets/done.png").resize((20, 20)), size=(20, 20))
         self.middle_title_done_btn = CTkButton(
             self.middle_title_frame,
-            text="Done",
-            font=("Arial", 14),
+            text="",
+            width=28,
             image=self.middle_title_done_img,
             compound="left",
             command=lambda: self.done_edit_language(language)
@@ -297,16 +337,15 @@ class HomePage(CTkFrame):
                 if w.cget("text") == language:
                     try:
                         w.configure(text_color=self._apply_appearance_mode(ThemeManager.theme["CTkButton"]["fg_color"]), font=("Roboto", 12, 'bold'))
-                        self.delete_language_img = CTkImage(Image.open("src/assets/trash.png").resize((25, 25)), size=(25, 25))
+                        self.delete_language_img = CTkImage(Image.open("src/assets/trash.png").resize((20, 20)), size=(20, 20))
                         self.delete_language_btn = CTkButton(
                             widget,
                             text='',
-                            font=("Arial", 14),
                             fg_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["top_fg_color"]),
                             hover_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["border_color"]),
                             image=self.delete_language_img,
                             compound="left",
-                            width=10,
+                            width=28,
                             command=lambda: self.delete_edit_language(language)
                         )
                         self.delete_language_btn.grid(row=0, column=2, sticky='ns', padx=5, pady=5)
@@ -361,16 +400,92 @@ class HomePage(CTkFrame):
         self.right_panel.grid_rowconfigure(4, weight=0)
 
         # Project Name Label
-        project_name_label = CTkLabel(self.right_panel, text=project, font=("Arial", 18, "bold"), anchor="w")
-        project_name_label.grid(row=0, column=0, sticky='ew', padx=15, pady=(15, 0))
+        self.right_title_frame = CTkFrame(self.right_panel, fg_color='transparent')
+        self.right_title_frame.grid(row=0, column=0, sticky='ew', padx=10, pady=10)
+        self.right_title_frame.grid_rowconfigure(0, weight=1)
+        self.right_title_frame.grid_columnconfigure(0, weight=1)
 
-        # Language Name Label
-        language_name_label = CTkLabel(self.right_panel, text=language, font=("Arial", 14, 'italic'), text_color=["gray35", "gray65"], anchor='w')
-        language_name_label.grid(row=1, column=0, sticky='ew', padx=20, pady=(0,15))
+        self.right_title_label = CTkLabel(self.right_title_frame, text=project, font=("Arial", 16, "bold"), anchor="w")
+        self.right_title_label.grid(row=0, column=0, sticky='ew')
+
+        # Edit Project Button
+        self.right_title_edit_img = CTkImage(Image.open("src/assets/edit.png").resize((20, 20)), size=(20, 20))
+        self.right_title_edit_btn = CTkButton(
+            self.right_title_frame,
+            text="",
+            width=28,
+            height=28,
+            fg_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["top_fg_color"]),
+            hover_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["border_color"]),
+            text_color=["black", "white"],
+            image=self.right_title_edit_img,
+            compound="left",
+            command=lambda: self.edit_project(language, project)
+        )
+        self.right_title_edit_btn.grid(row=0, column=1)
+
+        # # Language Name Label
+        # language_name_label = CTkLabel(self.right_panel, text=language, font=("Arial", 14, 'italic'), text_color=["gray35", "gray65"], anchor='w')
+        # language_name_label.grid(row=1, column=0, sticky='ew', padx=20, pady=(0,15))
 
         # Separator
         separator = CTkFrame(self.right_panel, height=2, fg_color=["gray65", "gray25"])
-        separator.grid(row=2, column=0, sticky="ew", padx=15, pady=(0, 15))
+        separator.grid(row=1, column=0, sticky="ew", padx=10, pady=(0, 10))
+
+        # Treeview Actions Frame
+        self.treeview_actions_frame = CTkFrame(self.right_panel, fg_color='transparent')
+        self.treeview_actions_frame.grid(row=2, column=0, sticky="ew", padx=10, pady=5)
+        self.treeview_actions_frame.grid_columnconfigure(1, weight=1)
+
+        self.right_treeview_delete_img = CTkImage(Image.open("src/assets/trash.png").resize((20, 20)), size=(20, 20))
+        self.right_treeview_delete_btn = CTkButton(
+            self.treeview_actions_frame,
+            text="",
+            width=28,
+            height=28,
+            fg_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["top_fg_color"]),
+            hover_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["border_color"]),
+            text_color=["black", "white"],
+            image=self.right_treeview_delete_img,
+            compound="left",
+            command=lambda: self.right_treeview_delete(language, project)
+        )
+        self.right_treeview_delete_btn.grid(row=0, column=0, padx=(0,10))
+        
+        # Treeview Label
+        self.file_name_entry = CTkEntry(self.treeview_actions_frame, placeholder_text='New File')
+        self.file_name_entry.grid(row=0, column=1, sticky='ew')
+
+        self.right_treeview_add_file_img = CTkImage(Image.open("src/assets/add_file.png").resize((20, 20)), size=(20, 20))
+        self.right_treeview_add_file_btn = CTkButton(
+            self.treeview_actions_frame,
+            text="",
+            width=28,
+            height=28,
+            fg_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["top_fg_color"]),
+            hover_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["border_color"]),
+            text_color=["black", "white"],
+            image=self.right_treeview_add_file_img,
+            compound="left",
+            command=lambda: self.right_treeview_add_file(language, project)
+        )
+        self.right_treeview_add_file_btn.grid(row=0, column=2, padx=(10,0))
+        
+        
+        self.right_treeview_add_folder_img = CTkImage(Image.open("src/assets/add_folder.png").resize((20, 20)), size=(20, 20))
+        self.right_treeview_add_folder_btn = CTkButton(
+            self.treeview_actions_frame,
+            text="",
+            width=28,
+            height=28,
+            fg_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["top_fg_color"]),
+            hover_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["border_color"]),
+            text_color=["black", "white"],
+            image=self.right_treeview_add_folder_img,
+            compound="left",
+            command=lambda: self.right_treeview_add_folder(language, project)
+        )
+        self.right_treeview_add_folder_btn.grid(row=0, column=3, padx=(10,0))
 
         # Treeview Frame
         self.treeview_frame = CTkFrame(self.right_panel)
@@ -378,31 +493,30 @@ class HomePage(CTkFrame):
         self.treeview_frame.grid_columnconfigure(0, weight=1)
         self.treeview_frame.grid_rowconfigure(1, weight=1)
 
-        # Treeview Label
-        self.treeview_label = CTkLabel(self.treeview_frame, text='TreeView', font=("Arial", 16, "bold"), anchor='w')
-        self.treeview_label.grid(row=0, column=0, sticky='ew', padx=10, pady=(10, 0))
-
         # Treeview Style
         bg_color = self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["top_fg_color"])
         text_color = self._apply_appearance_mode(ThemeManager.theme["CTkLabel"]["text_color"])
         selected_color = self._apply_appearance_mode(ThemeManager.theme["CTkButton"]["fg_color"])
 
+        normal_font = ('Arial', 12)
+        bold_font = ('Arial', 12, 'bold')
+
         treestyle = ttk.Style()
         treestyle.theme_use('default')
-        treestyle.configure("Treeview", background=bg_color, foreground=text_color, fieldbackground=bg_color, borderwidth=0)
+        treestyle.configure("Treeview", background=bg_color, foreground=text_color, fieldbackground=bg_color, borderwidth=0, font=normal_font)
         treestyle.map('Treeview', background=[('selected', bg_color)], foreground=[('selected', selected_color)])
-
+        
         # Treeview Widget
         self.treeview = ttk.Treeview(self.treeview_frame, show="tree")
-        self.treeview.grid(row=1, column=0, sticky="nsew", padx=10, pady=5)
+        self.treeview.grid(row=1, column=0, sticky="nsew", padx=15, pady=15)
         self.treeview.column("#0", width=200)
-
+                
         # Populate Treeview
         self.open_populate_tree(f"{self.BASE_PATH}/{language}/{project}", "")
 
         # Open Buttons Frame
-        self.img_vscode = CTkImage(Image.open("src/assets/visual-studio.png").resize((25, 25)), size=(25, 25))
-        self.img_folder = CTkImage(Image.open("src/assets/folder.png").resize((25, 25)), size=(25, 25))
+        self.img_vscode = CTkImage(Image.open("src/assets/visual-studio.png").resize((24, 24)), size=(25, 25))
+        self.img_folder = CTkImage(Image.open("src/assets/folder.png").resize((24, 24)), size=(25, 25))
 
         self.opens_frame = CTkFrame(self.right_panel, fg_color="transparent")
         self.opens_frame.grid(row=4, column=0, sticky="ew", padx=5, pady=5)
@@ -431,6 +545,12 @@ class HomePage(CTkFrame):
         )
         self.open_vscode_btn.grid(row=0, column=1, sticky="ew", padx=5, pady=5)
 
+        self.treeview.tag_configure("selected", font=bold_font)
+        self.treeview.bind("<<TreeviewSelect>>", lambda event: (
+            [self.treeview.item(item, tags=()) for item in self.treeview.tag_has("selected")],  # Réinitialise le tag pour tous les items ayant "selected"
+            [self.treeview.item(item, tags=("selected",)) for item in self.treeview.selection()]  # Applique le tag aux éléments sélectionnés
+        ))
+
     def open_populate_tree(self, path, parent):
         try:
             items = sorted(os.listdir(path))
@@ -447,6 +567,135 @@ class HomePage(CTkFrame):
 
         except PermissionError:
             pass
+    
+    def edit_project(self, language, project):
+        
+        self.right_title_label.grid_forget()
+        self.right_title_edit_btn.grid_forget()
+
+        # Create entry for new language name
+        self.edit_project_title_entry = CTkEntry(self.right_title_frame, placeholder_text=project)
+        self.edit_project_title_entry.grid(row=0, column=0, sticky="ew")
+
+        self.right_title_close_img = CTkImage(Image.open("src/assets/close.png").resize((20, 20)), size=(20, 20))
+        self.right_title_close_btn = CTkButton(
+            self.right_title_frame,
+            text="",
+            width=28,
+            height=28,
+            fg_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["top_fg_color"]),
+            hover_color=self._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["border_color"]),
+            text_color=["black", "white"],
+            image=self.right_title_close_img,
+            command=lambda: self.open_project(language, project)
+        )
+        self.right_title_close_btn.grid(row=0, column=1, padx=(5,0))
+
+        self.right_title_done_img = CTkImage(Image.open("src/assets/done.png").resize((20, 20)), size=(20, 20))
+        self.right_title_done_btn = CTkButton(
+            self.right_title_frame,
+            text="",
+            width=28,
+            height=28,
+            text_color=["black", "white"],
+            image=self.right_title_done_img,
+            command=lambda: self.done_edit_project(language, project)
+        )
+        self.right_title_done_btn.grid(row=0, column=2, padx=(5,0))
+
+    def done_edit_project(self, language, project):
+
+        projects_folder = FolderScript(f"{self.BASE_PATH}/{language}")
+        projects_folder.rename_folder(project, self.edit_project_title_entry.get())
+        self.open_project(language, self.edit_project_title_entry.get())
+        self.update_middle_panel(language)
+
+    def get_full_path_from_item(self, item_id, language, project):
+        parts = []
+        current = item_id
+        while current:
+            parts.append(self.treeview.item(current, "text"))
+            current = self.treeview.parent(current)
+        parts.reverse()
+        return os.path.join(self.BASE_PATH, language, project, *parts)
+
+    def right_treeview_add_file(self, language, project):
+        selected = self.treeview.selection()
+        if selected:
+            item_id = selected[0]
+            folder_path = self.get_full_path_from_item(item_id, language, project)
+            if not os.path.isdir(folder_path):
+                folder_path = os.path.join(self.BASE_PATH, language, project)
+                parent_item = ""  
+            else:
+                parent_item = item_id
+        else:
+            folder_path = os.path.join(self.BASE_PATH, language, project)
+            parent_item = ""
+
+        if self.file_name_entry.get():
+            fs = FolderScript(folder_path)
+            fs.create_file(self.file_name_entry.get())
+            self.treeview.insert(parent_item, "end", text=self.file_name_entry.get(), open=False)
+            self.file_name_entry.delete(0, "end")
+
+
+    def right_treeview_add_folder(self, language, project):
+        selected = self.treeview.selection()
+        if selected:
+            item_id = selected[0]
+            folder_path = self.get_full_path_from_item(item_id, language, project)
+            if not os.path.isdir(folder_path):
+                folder_path = os.path.join(self.BASE_PATH, language, project)
+                parent_item = ""
+            else:
+                parent_item = item_id
+        else:
+            folder_path = os.path.join(self.BASE_PATH, language, project)
+            parent_item = ""
+
+        if self.file_name_entry.get():
+            fs = FolderScript(folder_path)
+            fs.create_folder(self.file_name_entry.get())
+            self.treeview.insert(parent_item, "end", text=self.file_name_entry.get(), open=False)
+            self.file_name_entry.delete(0, "end")
+
+    def right_treeview_delete(self, language, project):
+        selected = self.treeview.selection()
+        if not selected:
+            return
+        item_id = selected[0]
+        full_path = self.get_full_path_from_item(item_id, language, project)
+        
+        if os.path.isdir(full_path):
+            parent_item = self.treeview.parent(item_id)
+            if parent_item:
+                parent_path = self.get_full_path_from_item(parent_item, language, project)
+            else:
+                parent_path = os.path.join(self.BASE_PATH, language, project)
+                
+            fs_parent = FolderScript(parent_path)
+            folder_name = os.path.basename(full_path)
+            try:
+                fs_parent.delete_folder(folder_name)
+                self.treeview.delete(item_id)
+            except Exception as e:
+                print(f"Erreur lors de la suppression du dossier : {e}")
+        elif os.path.isfile(full_path):
+            parent_item = self.treeview.parent(item_id)
+            if parent_item:
+                parent_path = self.get_full_path_from_item(parent_item, language, project)
+            else:
+                parent_path = os.path.join(self.BASE_PATH, language, project)
+            
+            fs_parent = FolderScript(parent_path)
+            file_name = os.path.basename(full_path)
+            try:
+                fs_parent.delete_file(file_name)
+                self.treeview.delete(item_id)
+            except Exception as e:
+                print(f"Erreur lors de la suppression du fichier : {e}")
+
 
     def open_folder(self, language, project):
         os.startfile(f"{self.BASE_PATH}/{language}/{project}")
@@ -512,7 +761,7 @@ class HomePage(CTkFrame):
         self.treeview.grid(row=0, column=0, sticky="nsew", padx=10, pady=5)
         self.treeview.column("#0", width=200)
         self.create_populate_tree()
-        self.create_img = CTkImage(Image.open("src/assets/add-propertie.png").resize((25, 25)), size=(25, 25))
+        self.create_img = CTkImage(Image.open("src/assets/add-propertie.png").resize((24, 24)), size=(25, 25))
         self.create_btn = CTkButton(
             self.right_panel,
             text="Create",

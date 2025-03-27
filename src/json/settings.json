@@ -4,7 +4,7 @@
             "English": 1,
             "Français": 0
         },
-        "Path": "C:/Users/Roucoule/Documents/Dev"
+        "Path": "C:/Users/USER/Documents/DEV"
     },
     "Apparence": {
         "Theme": {
@@ -12,9 +12,9 @@
             "Light": 0
         },
         "Color": {
-            "Green": 0,
+            "Green": 1,
             "Blue": 0,
-            "Black": 1
+            "Black": 0
         },
         "Project columns": {
             "state": 3,

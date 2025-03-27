@@ -80,7 +80,7 @@ class SettingsPage(CTkFrame):
 
         # Done button
         self.left_done_img = CTkImage(
-            Image.open("src/assets/done.png").resize((25, 25)),
+            Image.open("src/assets/done.png").resize((24, 24)),
             size=(25, 25)
         )
         self.left_done_btn = CTkButton(
