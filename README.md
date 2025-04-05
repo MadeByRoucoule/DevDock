@@ -6,7 +6,7 @@
 [![Commits](https://img.shields.io/github/commit-activity/t/MadeByRoucoule/DevDock)](https://github.com/MadeByRoucoule/DevDock/commits/main/)
 [![Stars](https://img.shields.io/github/stars/MadeByRoucoule/DevDock?style=social&label=Stars)](https://github.com/MadeByRoucoule/DevDock)
 
-<img src="src/assets/screenshot_mainpage.png" height="250px"> <img src="src/assets/screenshot_settings.png" height="250px">
+<img src="src/assets/screenshot_mainpage.png" height="225px"> <img src="src/assets/screenshot_settings.png" height="225px">
 
 </div>
 
