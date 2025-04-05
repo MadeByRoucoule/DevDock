@@ -14,27 +14,21 @@ class MenuBar:
         self.init_menubar()
 
     def init_menubar(self):
-        # Initialize menubar based on OS
         self.menu_bar = CTkMenuBar(self.master, bg_color=self.master._apply_appearance_mode(ThemeManager.theme["CTkFrame"]["fg_color"]))
 
-        # Add main menu buttons
         button_file = self.menu_bar.add_cascade("File")
         button_settings = self.menu_bar.add_cascade("Settings")
         button_about = self.menu_bar.add_cascade("About")
 
-        # Create dropdown for File menu
         dropdown_file = CustomDropdownMenu(widget=button_file)
 
-        # Submenu for 'New' options
         sub_menu_new = dropdown_file.add_submenu('New')
         sub_menu_new.add_option("Language", self.home_page.add_language)
 
-        # Submenu for creating a new project
         sub_menu_new_project = sub_menu_new.add_submenu("Project")
         for language in self.home_page.languages:
             sub_menu_new_project.add_option(language, lambda lang=language: self.home_page.add_project(lang))
 
-        # Submenu for 'Open' options
         sub_menu_open = dropdown_file.add_submenu('Open')
         for language in self.home_page.languages:
             sub_menu_open_lang = sub_menu_open.add_submenu(language)
@@ -49,12 +43,10 @@ class MenuBar:
 
         dropdown_file.add_option("Exit", self.master.destroy)
 
-        # Create dropdown for Settings menu
         dropdown_settings = CustomDropdownMenu(widget=button_settings)
         dropdown_settings.add_option("Preferences", self.home_page.open_settings)
         dropdown_settings.add_option("Update", self.home_page.update)
 
-        # Create dropdown for About menu
         dropdown_about = CustomDropdownMenu(widget=button_about)
         dropdown_about.add_option(option="Github", command=lambda: webbrowser.open("https://github.com/MadeByRoucoule/DevDock"))
 
