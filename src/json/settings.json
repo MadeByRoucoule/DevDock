@@ -4,17 +4,18 @@
             "English": 1,
             "Français": 0
         },
-        "Path": "C:/Users/Roucoule/Documents/Dev"
+        "Path": ""
     },
     "Apparence": {
         "Theme": {
-            "Dark": 1,
+            "System": 1,
+            "Dark": 0,
             "Light": 0
         },
         "Color": {
             "Green": 0,
             "Blue": 0,
-            "Black": 1
+            "Black&White": 1
         },
         "Project columns": {
             "state": 3,

@@ -13,6 +13,7 @@ class HomePage(CTkFrame):
         super().__init__(master, fg_color=fg_color)
 
         # Configuration
+        self.master = master
         self.settings_script = SettingsScript()
         self.BASE_PATH = self.settings_script.get_setting_value("General.Path")
         self.pages_script = pages_script
@@ -562,6 +563,7 @@ class HomePage(CTkFrame):
     def open_settings(self):
         from pages.settingspage import SettingsPage
         self.menu_bar.destroy_bar()
+        self.master.title("DevDock - Settings")
         self.pages_script.change_page(SettingsPage(self.master, self.pages_script))
 
     def update(self):

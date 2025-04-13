@@ -6,8 +6,9 @@ class SettingsPage(CTkFrame):
     def __init__(self, master, pages_script, fg_color="transparent"):
         # Initialize SettingsPage
         super().__init__(master, fg_color=fg_color)
-
+        
         # Load settings
+        self.master = master
         self.settings_script = SettingsScript()
         self.settings = self.settings_script.get_settings()
 
@@ -220,3 +221,4 @@ class SettingsPage(CTkFrame):
         self.settings_script.settings = self.settings
         self.settings_script.save_settings()
         self.pages_script.change_page(HomePage(self.master, self.pages_script))
+        self.master.title("DevDock - Home")

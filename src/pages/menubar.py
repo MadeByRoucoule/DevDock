@@ -52,7 +52,7 @@ class MenuBar:
         # Create dropdown for Settings menu
         dropdown_settings = CustomDropdownMenu(widget=button_settings)
         dropdown_settings.add_option("Preferences", self.home_page.open_settings)
-        dropdown_settings.add_option("Update", self.home_page.update)
+        # dropdown_settings.add_option("Update", self.home_page.update)
 
         # Create dropdown for About menu
         dropdown_about = CustomDropdownMenu(widget=button_about)
